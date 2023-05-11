@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { createRandomData } from './data-generator';
 
 @Component({
@@ -8,6 +9,7 @@ import { createRandomData } from './data-generator';
         <!-- The kendoGridBinding handles the grouping, sorting and filtering with virtual scrolling -->
         <kendo-grid
             [kendoGridBinding]="data"
+            [rowClass]="rowCallback"
             [navigable]="true"
             [sortable]="true"
             [filterable]="true"
@@ -33,4 +35,14 @@ export class AppComponent {
     this.data = createRandomData(1000);
     console.log(this.data.length);
   }
+
+  public rowCallback = (context: RowClassArgs) => {
+    console.log(context);
+    // if (context.dataItem.UnitPrice <= 0) {
+    //   return { gold: true };
+    // } else {
+    //   return { green: true };
+    // }
+    return '';
+  };
 }
