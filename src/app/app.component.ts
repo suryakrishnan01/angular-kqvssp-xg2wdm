@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { RowClassArgs } from '@progress/kendo-angular-grid';
+import { RowClassArgs, ScrollMode } from '@progress/kendo-angular-grid';
 import { createRandomData } from './data-generator';
 
 @Component({
@@ -14,9 +14,10 @@ import { createRandomData } from './data-generator';
             [sortable]="true"
             [filterable]="true"
             [groupable]="true"
-            [pageSize]="50"
-            scrollable="virtual"
-            [rowHeight]="36"
+            [pageSize]="(scrollMode == 'virtual') ? 100 : pageable ? pageSize : this.data.length"
+            [pageable]="pageable"
+            [scrollable]="scrollMode"
+            [rowHeight]=""
             [height]="450"
         >
         <kendo-grid-column field="id" [width]="80" title="ID"></kendo-grid-column>
@@ -29,6 +30,9 @@ import { createRandomData } from './data-generator';
 })
 export class AppComponent {
   public data: unknown[] = [];
+  public pageSize: number = 50;
+  public pageable: boolean = false;
+  public scrollMode: ScrollMode = 'virtual';
 
   constructor() {
     // generating 1000 rows of local data
