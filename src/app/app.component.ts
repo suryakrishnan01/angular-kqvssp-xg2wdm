@@ -1,5 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { RowClassArgs, ScrollMode } from '@progress/kendo-angular-grid';
+import {
+  PageChangeEvent,
+  RowClassArgs,
+  ScrollMode,
+} from '@progress/kendo-angular-grid';
 import { createRandomData } from './data-generator';
 
 @Component({
@@ -14,10 +18,11 @@ import { createRandomData } from './data-generator';
             [sortable]="true"
             [filterable]="true"
             [groupable]="true"
+            (pageChange)="onPageChange($event)"
             [pageSize]="(scrollMode == 'virtual') ? 100 : pageable ? pageSize : this.data.length"
             [pageable]="pageable"
             [scrollable]="scrollMode"
-            [rowHeight]=""
+            [rowHeight]="(scrollMode == 'virtual') ? 36 : 0"
             [height]="450"
         >
         <kendo-grid-column field="id" [width]="80" title="ID"></kendo-grid-column>
@@ -31,7 +36,7 @@ import { createRandomData } from './data-generator';
 export class AppComponent {
   public data: unknown[] = [];
   public pageSize: number = 50;
-  public pageable: boolean = false;
+  public pageable: boolean = true;
   public scrollMode: ScrollMode = 'virtual';
 
   constructor() {
@@ -41,7 +46,7 @@ export class AppComponent {
   }
 
   public rowCallback = (context: RowClassArgs) => {
-    console.log(context);
+    //console.log(context);
     // if (context.dataItem.UnitPrice <= 0) {
     //   return { gold: true };
     // } else {
@@ -49,4 +54,8 @@ export class AppComponent {
     // }
     return '';
   };
+
+  public onPageChange(e: PageChangeEvent): void {
+    console.log(e);
+  }
 }
